@@ -8,14 +8,14 @@ from scipy.special import gamma as gamma_func
 from .utils import normalize_rows
 
 
-def fit_vMF(X):
+def fit_vMF(X, weights):
     "Fit a von Mises Fisher on 3D input data and return the MLE parameters"
     n_dim = 3
     n_points = len(X)
     X = normalize_rows(X)
-    X_av = np.mean(X, axis=0)
+    X_av = np.average(X, axis=0, weights=weights)
     # Simple approximation (Sra, 2011)
-    R = np.linalg.norm(X.sum(axis=0)) / n_points
+    R = np.linalg.norm(X_av * n_points) / n_points
     kappa_est = R * (n_dim - R**2) / (1 - R**2)
 
     return X_av / R, kappa_est
@@ -34,9 +34,11 @@ class VonMisesFisher():
         return self.kappa / (4 * np.pi * np.sinh(self.kappa))
 
     @classmethod
-    def fit(cls, X):
+    def fit(cls, X, weights=None):
         "Fit a vMF on input data and return an instance with fitted parameters"
-        mu, kappa = fit_vMF(X)
+        if weights is None:
+            weights = np.ones(len(X))
+        mu, kappa = fit_vMF(X, weights)
         return cls(mu, kappa)
 
     def __call__(self, X):
@@ -55,3 +57,5 @@ if __name__ == "__main__":
     print(VonMisesFisher.fit(dummy_data))
     dummy_data = np.random.random((100000, 3)) - np.array([[.5, .5, .5]])
     print(VonMisesFisher.fit(dummy_data))
+    dummy_data = np.array([[0, 0, 1.], [0, 0, -1]])
+    print(VonMisesFisher.fit(dummy_data, weights=np.array([1e3, 1])))

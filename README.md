@@ -1,5 +1,13 @@
 # SphereProba
 
+## Installation
+Clone the repository and use pip to install the package.
+```bash
+git clone https://github.com/rfayat/SphereProba.git
+cd SphereProba
+pip install -e .  # -e: editable
+```
+## Generating the example figures
 To generate the example figures, install seaborn and [angle_visualization](https://github.com/rfayat/angle_visualization) and run:
 
 ```bash

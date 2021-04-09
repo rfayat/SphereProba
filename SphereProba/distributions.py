@@ -14,7 +14,7 @@ def fit_vMF(X):
     n_points = len(X)
     X = normalize_rows(X)
     X_av = np.mean(X, axis=0)
-    # Simple approXimation (Sra, 2011)
+    # Simple approximation (Sra, 2011)
     R = np.linalg.norm(X.sum(axis=0)) / n_points
     kappa_est = R * (n_dim - R**2) / (1 - R**2)
 

@@ -140,11 +140,10 @@ class Kent():
     def __call__(self, X):
         "Return the density for a range of 3-dimensional unit vectors"
         gamma1, gamma2, gamma3 = self.gamma[:, :, np.newaxis]
-        return np.exp(
-            self.kappa * X @ gamma1 +
-            self.beta * (X @ gamma2)**2 -
-            self.beta * (X @ gamma3)**2
-        ) / self.C
+        exponent = self.kappa * X @ gamma1 +\
+                   self.beta * (X @ gamma2)**2 -\
+                   self.beta * (X @ gamma3)**2
+        return np.exp(exponent.flatten()) / self.C
 
     def __repr__(self):
         return(f"""Kent distribution with parameters:
@@ -156,17 +155,15 @@ class Kent():
 
 
 if __name__ == "__main__":
+    random_seed = np.random.RandomState(42)
     print("Examples for Von Mises Fisher distribution\n" + "-" * 40)
     dummy_data = np.array([[0, 0, 1.], [0, 0.01, 1.01]])
     print(VonMisesFisher.fit(dummy_data))
-    dummy_data = np.random.random((100000, 3)) - np.array([[.5, .5, .5]])
+    dummy_data = random_seed.random((100000, 3)) - np.array([[.5, .5, .5]])
     print(VonMisesFisher.fit(dummy_data))
     dummy_data = np.array([[0, 0, 1.], [0, 0, -1]])
     print(VonMisesFisher.fit(dummy_data, weights=np.array([1e3, 1])))
 
     print("\nTesting Kent distribution\n" + "-" * 40)
-    dummy_data = np.random.random((10000, 3))
-    dummy_data[:, 1] = dummy_data[:, 1] / 2
-    print(Kent.fit(dummy_data))
-    dummy_data = np.random.random((10000, 3)) - np.array([[.5, .5, .1]])
+    dummy_data = random_seed.random((10000, 3)) - np.array([[.5, .3, .1]])
     print(Kent.fit(dummy_data))

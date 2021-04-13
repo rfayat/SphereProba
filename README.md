@@ -36,4 +36,20 @@ vMF distribution with parameters:
         κ = 500.9975019979858
 ```
 ### Example for different kappas
-![kappa example](examples/vmf.png)
+![vmf example](examples/vmf.png)
+
+## Kent (Fisher-Bingham 5)
+### Fit from a range of 3D vectors
+```python
+>>> dummy_data = np.random.random((10000, 3)) - np.array([[.5, .3, .1]])
+>>> print(Kent.fit(dummy_data))
+Kent distribution with parameters:
+        γ1 = [-0.01238757  0.43245837  0.9015688 ]
+        γ2 = [-0.99658471  0.06827784 -0.04644414]
+        γ3 = [-0.08164233 -0.89906501  0.4301356 ]
+        κ = 2.769705279148834
+        β = 0.05539125253921717
+```
+
+### Example for different values of kappa and beta
+![kent example](examples/kent.png)

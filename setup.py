@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name="SphereProba",
-    version="0.3",
+    version="0.4",
     author="Romain Fayat",
     author_email="r.fayat@gmail.com",
     description="Code for fitting distribution functions on the unit sphere",

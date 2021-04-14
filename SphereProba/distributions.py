@@ -22,7 +22,7 @@ def _fit_vMF(X, weights):
     return X_av / R, kappa_est
 
 
-def _fit_kent(X):
+def _fit_kent(X, weights):
     """Fit a Kent distribution on 3D input data and return the parameters
 
     We use here the formulas introduced in Kent 1982, which hold for kappa
@@ -32,8 +32,8 @@ def _fit_kent(X):
     n_dim = 3
     n_points = len(X)
     X = utils.normalize_rows(X)
-    X_av = np.mean(X, axis=0)
-    X_cov = np.cov(X.T)
+    X_av = np.average(X, axis=0, weights=weights)
+    X_cov = np.cov(X.T, aweights=weights)
 
     # Estimate Gamma
     _, theta, phi = utils.cart2polar(*X_av)
@@ -102,6 +102,7 @@ class VonMisesFisher():
 
 class Kent():
     "3-dimensional Kent distribution"
+    minimum_value_for_kappa = 1E-6
 
     def __init__(self, gamma, kappa, beta):
         self.gamma = gamma
@@ -122,9 +123,12 @@ class Kent():
         return C_numerator / C_denominator
 
     @classmethod
-    def fit(cls, X):
+    def fit(cls, X, weights=None):
         "Fit the distribution on input data and return an instance"
-        gamma, kappa, beta = _fit_kent(X)
+        if weights is None:
+            weights = np.ones(len(X))
+        gamma, kappa, beta = _fit_kent(X, weights)
+        kappa = max(kappa, Kent.minimum_value_for_kappa)
         return cls(gamma, kappa, beta)
 
     def _check_params(self):
@@ -167,3 +171,11 @@ if __name__ == "__main__":
     print("\nTesting Kent distribution\n" + "-" * 40)
     dummy_data = random_seed.random((10000, 3)) - np.array([[.5, .3, .1]])
     print(Kent.fit(dummy_data))
+    dummy_data = np.array([[ 0.        , -0.4472136 ,  0.89442719],
+                           [-0.81649658,  0.40824829,  0.40824829],
+                           [-0.85811633, -0.19069252,  0.47673129],
+                           [ 0.30151134, -0.90453403,  0.30151134],
+                           [ 0.53452248, -0.80178373, -0.26726124],
+                           [-0.53452248, -0.80178373, -0.26726124]])
+    print(Kent.fit(dummy_data))
+    print(Kent.fit(dummy_data, weights=np.array([5, 1, 1, 1, 1, 1])))

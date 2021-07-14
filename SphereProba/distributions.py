@@ -84,6 +84,17 @@ class VonMisesFisher():
         mu, kappa = _fit_vMF(X, weights)
         return cls(mu, kappa)
 
+    def kappa_to_thetamax(self, alpha, degrees=True):
+        """Return the angle around the mean of a vMF to obtain alpha of the pdf.
+
+        For instance, self.kappa_to_thetamax(.95) returns theta so that
+        integrating the distribution for the points on the S2 sphere having an
+        angular distance to mu < theta yields .95.
+        """
+        den = np.log(1 - alpha + alpha * np.exp(-2 * self.kappa))
+        thetamax = np.arccos(1 + den / self.kappa)
+        return np.degrees(thetamax) if degrees else thetamax
+
     def _check_params(self):
         "Check that the parameters of the distribution are valid."
         assert self.kappa >= 0

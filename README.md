@@ -61,7 +61,7 @@ For instance, the angle `theta` for which 95% of the distribution is contained w
 The proof for the explicit formula for computing the value of `theta` given both `kappa` and the expected value of the integral on the corresponding spherical cap is defined in [this short pdf](ressources/vmf_integration.pdf).
 
 ## Kent distribution on the unit sphere
-The Kent distribution (or 5-parameter Fisher-Bingham distribution) extends the von Mises-Fisher by making it anisotropic (ellipsoid on the sphere). It has parameters `gamma`, an orthonormal matrix whose components define the mean direction of the distribution (`gamma1`) and directions of major and minor axes of the ellipsoid (respectively `gamma2` and `gamma3`).
+The [Kent distribution](https://en.wikipedia.org/wiki/Kent_distribution) (or 5-parameter Fisher-Bingham distribution) extends the von Mises-Fisher by making it anisotropic (ellipsoid on the sphere). It has parameters `gamma`, an orthonormal matrix whose components define the mean direction of the distribution (`gamma1`) and directions of major and minor axes of the ellipsoid (respectively `gamma2` and `gamma3`).
 
 Similarly to the von Mises-Fisher distribution, a parameter `kappa`rules the concentration of the distribution while `beta` defines the extent to which the ellipsoid is stretched.
 

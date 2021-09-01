@@ -1,5 +1,7 @@
 # SphereProba
 
+Fit and manipulate a few probability distribution functions on the unit S2 sphere.
+
 ## Installation
 Clone the repository and use pip to install the package.
 ```bash

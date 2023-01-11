@@ -57,6 +57,11 @@ def _fit_kent(X, weights):
     kappa = 1 / (2 - 2 * r1 - r2) + 1 / (2 - 2 * r1 + r2)
     beta = (1 / (2 - 2 * r1 - r2) - 1 / (2 - 2 * r1 + r2)) / 2
 
+    # If beta is negative, flip the major and minor axes of deformation
+    if beta < 0.:
+        beta = -beta
+        gamma = np.c_[gamma[0], gamma[2], -gamma[1]]  # -γ2 to preserve right-hand
+    
     return gamma, kappa, beta
 
 class VonMisesFisher():
